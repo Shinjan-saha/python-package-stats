@@ -11,10 +11,12 @@ export async function GET(req: NextRequest) {
     });
   }
 
+  console.log('🔐 Loaded API KEY:', process.env.PEPY_API_KEY); 
+
   try {
     const response = await axios.get(`https://api.pepy.tech/api/v2/projects/${packageName}`, {
       headers: {
-        Authorization: process.env.PEPY_API_KEY ? `Bearer ${process.env.PEPY_API_KEY}` : '',
+        'X-API-Key': process.env.PEPY_API_KEY || '',
       },
     });
 
@@ -23,12 +25,12 @@ export async function GET(req: NextRequest) {
       headers: { 'Access-Control-Allow-Origin': '*' },
     });
   } catch (err: any) {
-    console.error('❌ Axios error:', err.response?.data || err.message); // <-- DEBUG LOG
+    console.error('❌ Axios error:', err.response?.data || err.message);
 
     return NextResponse.json({
       error: err.response?.data || err.message || 'Unknown error',
     }, {
-      status: 500,
+      status: err.response?.status || 500,
       headers: { 'Access-Control-Allow-Origin': '*' },
     });
   }
