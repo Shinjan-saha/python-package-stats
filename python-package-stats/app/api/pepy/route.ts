@@ -1,5 +1,3 @@
-// app/api/pepy/route.ts
-
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 
@@ -25,7 +23,11 @@ export async function GET(req: NextRequest) {
       headers: { 'Access-Control-Allow-Origin': '*' },
     });
   } catch (err: any) {
-    return NextResponse.json({ error: 'Package not found or API failed' }, {
+    console.error('❌ Axios error:', err.response?.data || err.message); // <-- DEBUG LOG
+
+    return NextResponse.json({
+      error: err.response?.data || err.message || 'Unknown error',
+    }, {
       status: 500,
       headers: { 'Access-Control-Allow-Origin': '*' },
     });
