@@ -81,7 +81,8 @@ export default function Home() {
           <div className="max-w-2xl mx-auto">
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity"></div>
-              <div className="relative flex items-center bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-2">
+              <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-0 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-2">
+
                 <input
                   type="text"
                   value={input}
@@ -94,10 +95,11 @@ export default function Home() {
                   className="flex-1 bg-transparent text-white placeholder-slate-400 px-6 py-4 text-lg focus:outline-none"
                   placeholder="Enter PyPI package name..."
                 />
-                <button 
-                  onClick={() => setPackageName(input.trim())}
-                  className="flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-8 py-4 rounded-xl font-semibold hover:scale-105 transform transition-all duration-200 shadow-lg hover:shadow-cyan-500/25"
-                >
+               <button 
+  onClick={() => setPackageName(input.trim())}
+  className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 transform transition-all duration-200 shadow-lg hover:shadow-cyan-500/25"
+>
+
                   <Search className="w-5 h-5" />
                   Search
                 </button>
