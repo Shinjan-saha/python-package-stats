@@ -194,60 +194,80 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Daily Downloads */}
-            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center">
-                  <Calendar className="w-6 h-6 text-white" />
+{/* Daily Downloads */}
+<div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8">
+  <div className="flex items-center gap-3 mb-6">
+    <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center">
+      <Calendar className="w-6 h-6 text-white" />
+    </div>
+    <h3 className="text-2xl font-bold text-white">Daily Download Breakdown</h3>
+  </div>
+
+  {data && (
+    <div className="max-h-[36rem] overflow-y-auto space-y-6 pr-2">
+      {Object.entries(data.downloads)
+        .sort(([a], [b]) => new Date(b).getTime() - new Date(a).getTime())
+        .map(([date, versions], index) => {
+          const totalDayDownloads = Object.values(versions).reduce((sum, count) => sum + count, 0);
+
+          return (
+            <div
+              key={date}
+              className="bg-white/5 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full"></div>
+                  <span className="text-white font-semibold text-lg">{date}</span>
                 </div>
-                <h3 className="text-2xl font-bold text-white">Daily Download Breakdown</h3>
+                <div className="px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-xl border border-white/10">
+                  <span className="text-cyan-300 font-medium">
+                    {formatNumber(totalDayDownloads)} total
+                  </span>
+                </div>
               </div>
 
-              <div className="space-y-6">
-                {Object.entries(data.downloads).map(([date, versions], dateIndex) => {
-                  const totalDayDownloads = Object.values(versions).reduce((sum, count) => sum + count, 0);
-                  
-                  return (
-                    <div key={date} className="bg-white/5 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-3 h-3 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full"></div>
-                          <span className="text-white font-semibold text-lg">{date}</span>
-                        </div>
-                        <div className="px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-xl border border-white/10">
-                          <span className="text-cyan-300 font-medium">{formatNumber(totalDayDownloads)} total</span>
-                        </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {Object.entries(versions).map(([version, count], versionIndex) => (
+                  <div
+                    key={version}
+                    className="bg-gradient-to-br from-white/5 to-white/10 rounded-xl p-4 border border-white/10 hover:scale-105 transform transition-all duration-200"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div
+                          className={`w-2 h-2 bg-gradient-to-r ${getVersionColor(
+                            versionIndex
+                          )} rounded-full`}
+                        ></div>
+                        <span className="text-slate-300 font-medium">v{version}</span>
                       </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {Object.entries(versions).map(([version, count], versionIndex) => (
-                          <div
-                            key={version}
-                            className="bg-gradient-to-br from-white/5 to-white/10 rounded-xl p-4 border border-white/10 hover:scale-105 transform transition-all duration-200"
-                          >
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <div className={`w-2 h-2 bg-gradient-to-r ${getVersionColor(versionIndex)} rounded-full`}></div>
-                                <span className="text-slate-300 font-medium">v{version}</span>
-                              </div>
-                              <span className="text-white font-bold">{formatNumber(count)}</span>
-                            </div>
-                            
-                            {/* Progress bar */}
-                            <div className="mt-3 bg-white/10 rounded-full h-2 overflow-hidden">
-                              <div
-                                className={`h-full bg-gradient-to-r ${getVersionColor(versionIndex)} transition-all duration-1000 ease-out`}
-                                style={{ width: `${(count / totalDayDownloads) * 100}%` }}
-                              ></div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                      <span className="text-white font-bold">{formatNumber(count)}</span>
                     </div>
-                  );
-                })}
+
+                    <div className="mt-3 bg-white/10 rounded-full h-2 overflow-hidden">
+                      <div
+                        className={`h-full bg-gradient-to-r ${getVersionColor(
+                          versionIndex
+                        )} transition-all duration-1000 ease-out`}
+                        style={{ width: `${(count / totalDayDownloads) * 100}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
+          );
+        })}
+    </div>
+  )}
+
+  {/* Footer */}
+  <div className="mt-10 text-center text-slate-400 font-semibold">
+    made with <span className="text-pink-500">♥</span> Shinjan
+  </div>
+</div>
+
           </div>
         )}
       </main>
